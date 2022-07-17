@@ -53,7 +53,7 @@ const FilesProvider: FunctionComponent<Props> = ({ children }) => {
     }
 
     if (event) {
-      setLoadedFilesCount(fileIndex - 1);
+      setLoadedFilesCount(fileIndex);
       handleReaderResults(event);
     }
 
@@ -67,7 +67,7 @@ const FilesProvider: FunctionComponent<Props> = ({ children }) => {
     reader.onload = (e: ProgressEvent<FileReader>) =>
       setTimeout(() => {
         loadFile(fileIndex + 1, e);
-      }, 1000);
+      }, 200);
     reader.readAsText(files[fileIndex]);
   };
 
