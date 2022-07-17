@@ -75,7 +75,7 @@ const FilesProvider: FunctionComponent<Props> = ({ children }) => {
     reader.onload = (e: ProgressEvent<FileReader>) =>
       setTimeout(() => {
         loadFile(fileIndex + 1, e);
-      }, 200);
+      }, 1);
     reader.readAsText(files[fileIndex]);
   };
 

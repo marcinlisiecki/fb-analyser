@@ -1,5 +1,5 @@
-const defaultTheme = require("tailwindcss/defaultTheme");
-const colors = require("tailwindcss/colors");
+const defaultTheme = require('tailwindcss/defaultTheme');
+const colors = require('tailwindcss/colors');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Manrope", ...defaultTheme.fontFamily.sans]
+        sans: ['Manrope', ...defaultTheme.fontFamily.sans],
       },
       colors: {
         ...colors,
@@ -17,11 +17,12 @@ module.exports = {
         success: colors.green,
         warning: colors.yellow,
         text: {
-          primary: "#000",
+          primary: '#000',
           secondary: colors.slate[500],
-        }
-      }
+          tertiary: colors.slate[400],
+        },
+      },
     },
   },
   plugins: [],
-}
+};

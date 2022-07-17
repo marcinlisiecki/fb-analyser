@@ -7,6 +7,7 @@ import { useMessages } from 'context/MessagesContext';
 import FilesLoadingModal from 'components/organisms/FilesLoadingModal';
 
 import { DocumentTextIcon } from '@heroicons/react/solid';
+import Button from 'components/atoms/Button';
 
 interface OwnProps {}
 type Props = OwnProps;
@@ -14,7 +15,7 @@ type Props = OwnProps;
 const HomePage: NextPage<Props> = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const { files, setFiles, addFiles } = useFiles();
+  const { files, setFiles, addFiles, loadFiles } = useFiles();
   const { messages, photosCount } = useMessages();
 
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
@@ -24,12 +25,10 @@ const HomePage: NextPage<Props> = () => {
     addFiles(e);
   };
 
-  // useEffect(() => {
-  //   if (files) {
-  //     loadFiles();
-  //     setIsModalOpen(true);
-  //   }
-  // }, [files]);
+  const handleLoadFiles = () => {
+    loadFiles();
+    setIsModalOpen(true);
+  };
 
   return (
     <>
@@ -53,6 +52,12 @@ const HomePage: NextPage<Props> = () => {
               </div>
             ))}
           </div>
+
+          {files.length > 0 && (
+            <Button customStyles={'mt-8'} onClick={handleLoadFiles}>
+              Załaduj pliki
+            </Button>
+          )}
         </div>
       </div>
     </>
