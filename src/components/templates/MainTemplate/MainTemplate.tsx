@@ -13,7 +13,7 @@ type Props = OwnProps;
 const MainTemplate: FunctionComponent<Props> = ({ children, title, withPadding = true }) => {
   return (
     <PageTemplate title={title}>
-      <main className={`w-full max-w-screen-2xl mx-auto ${withPadding && 'p-12'}`}>{children}</main>
+      <main className={`w-full max-w-screen-xl mx-auto ${withPadding && 'p-12'}`}>{children}</main>
     </PageTemplate>
   );
 };

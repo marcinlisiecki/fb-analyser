@@ -11,6 +11,9 @@ interface ContextState {
 
   photosCount: number;
   setPhotosCount: (photosCount: number) => void;
+
+  participants: string[];
+  setParticipants: (participants: string[]) => void;
 }
 
 const MessagesContext = createContext<ContextState | null>(null);
@@ -18,6 +21,7 @@ const MessagesContext = createContext<ContextState | null>(null);
 const MessagesProvider: FunctionComponent<Props> = ({ children }) => {
   const [messages, setMessages] = useState<Message[] | null>(null);
   const [photosCount, setPhotosCount] = useState<number>(0);
+  const [participants, setParticipants] = useState<string[]>([]);
 
   return (
     <MessagesContext.Provider
@@ -26,6 +30,8 @@ const MessagesProvider: FunctionComponent<Props> = ({ children }) => {
         setMessages,
         photosCount,
         setPhotosCount,
+        participants,
+        setParticipants,
       }}
     >
       {children}

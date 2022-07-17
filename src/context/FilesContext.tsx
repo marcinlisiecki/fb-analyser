@@ -32,7 +32,7 @@ let messages: Message[] = [];
 let photosCount: number = 0;
 
 const FilesProvider: FunctionComponent<Props> = ({ children }) => {
-  const { setMessages, setPhotosCount } = useMessages();
+  const { setMessages, setPhotosCount, participants, setParticipants } = useMessages();
 
   const [files, setFiles] = useState<File[]>([]);
   const [loadedFilesCount, setLoadedFilesCount] = useState<number>(0);
@@ -41,6 +41,11 @@ const FilesProvider: FunctionComponent<Props> = ({ children }) => {
     if (typeof event.target?.result !== 'string') return;
 
     const json: any = JSON.parse(event.target.result);
+    if (participants.length === 0) {
+      setParticipants(
+        json.participants.reduce((prev: string[], val: any) => [...prev, utf8.decode(val.name)], [])
+      );
+    }
 
     json.messages.forEach((message: any) => {
       if (!message.content) {
@@ -87,6 +92,7 @@ const FilesProvider: FunctionComponent<Props> = ({ children }) => {
     setLoadedFilesCount(0);
     setMessages(null);
     setPhotosCount(0);
+    setParticipants([]);
 
     messages = [];
     photosCount = 0;
@@ -96,12 +102,19 @@ const FilesProvider: FunctionComponent<Props> = ({ children }) => {
   };
 
   const addFiles = (e: DragEvent<HTMLDivElement>) => {
-    const filesToAdd: File[] = [];
+    const newFiles: File[] = [...files];
     Array.from(e.dataTransfer.files).map((file: File) => {
-      filesToAdd.push(file);
+      newFiles.push(file);
     });
 
-    setFiles((prevState) => [...prevState, ...filesToAdd]);
+    newFiles.sort(
+      (a: File, b: File) =>
+        // @ts-ignore
+        parseInt(a.name.match(/\d/g).join('')) - parseInt(b.name.match(/\d/g).join(''))
+    );
+    console.log(newFiles);
+
+    setFiles(newFiles);
   };
 
   return (
