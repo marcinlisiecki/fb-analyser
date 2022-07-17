@@ -6,28 +6,30 @@ import { useFiles } from 'context/FilesContext';
 import { useMessages } from 'context/MessagesContext';
 import FilesLoadingModal from 'components/organisms/FilesLoadingModal';
 
+import { DocumentTextIcon } from '@heroicons/react/solid';
+
 interface OwnProps {}
 type Props = OwnProps;
 
 const HomePage: NextPage<Props> = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const { files, setFiles, loadFiles } = useFiles();
+  const { files, setFiles, addFiles } = useFiles();
   const { messages, photosCount } = useMessages();
 
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
 
     if (!e.dataTransfer.files) return;
-    setFiles(e.dataTransfer.files);
+    addFiles(e);
   };
 
-  useEffect(() => {
-    if (files) {
-      loadFiles();
-      setIsModalOpen(true);
-    }
-  }, [files]);
+  // useEffect(() => {
+  //   if (files) {
+  //     loadFiles();
+  //     setIsModalOpen(true);
+  //   }
+  // }, [files]);
 
   return (
     <>
@@ -43,11 +45,14 @@ const HomePage: NextPage<Props> = () => {
           </div>
           <FileInput handleDrop={handleDrop} />
 
-          <p className={'text-text-secondary font-medium mt-2'}>Jakie pliki?</p>
-
-          <p>
-            {messages?.length}, {photosCount}
-          </p>
+          <div className={'mt-4 grid grid-cols-3 gap-2'}>
+            {files.map((file, index) => (
+              <div key={index} className={' flex items-center gap-x-1'}>
+                <DocumentTextIcon className={'w-4 h-4 fill-gray-400'} />
+                <p className={'text-sm font-medium text-text-secondary'}>{file.name}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </>

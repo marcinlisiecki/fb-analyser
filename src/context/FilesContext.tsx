@@ -1,4 +1,11 @@
-import React, { createContext, FunctionComponent, ReactNode, useContext, useState } from 'react';
+import React, {
+  createContext,
+  DragEvent,
+  FunctionComponent,
+  ReactNode,
+  useContext,
+  useState,
+} from 'react';
 import { useMessages } from 'context/MessagesContext';
 
 import utf8 from 'utf8';
@@ -10,10 +17,11 @@ interface OwnProps {
 type Props = OwnProps;
 
 interface ContextState {
-  files: FileList | null;
-  setFiles: (files: FileList | null) => void;
+  files: File[];
+  setFiles: (files: File[]) => void;
   loadFiles: () => void;
   loadedFilesCount: number;
+  addFiles: (e: DragEvent<HTMLDivElement>) => void;
 }
 
 const FilesContext = createContext<null | ContextState>(null);
@@ -26,7 +34,7 @@ let photosCount: number = 0;
 const FilesProvider: FunctionComponent<Props> = ({ children }) => {
   const { setMessages, setPhotosCount } = useMessages();
 
-  const [files, setFiles] = useState<FileList | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
   const [loadedFilesCount, setLoadedFilesCount] = useState<number>(0);
 
   const handleReaderResults = (event: ProgressEvent<FileReader>) => {
@@ -87,6 +95,15 @@ const FilesProvider: FunctionComponent<Props> = ({ children }) => {
     loadFile(0, null);
   };
 
+  const addFiles = (e: DragEvent<HTMLDivElement>) => {
+    const filesToAdd: File[] = [];
+    Array.from(e.dataTransfer.files).map((file: File) => {
+      filesToAdd.push(file);
+    });
+
+    setFiles((prevState) => [...prevState, ...filesToAdd]);
+  };
+
   return (
     <FilesContext.Provider
       value={{
@@ -94,6 +111,7 @@ const FilesProvider: FunctionComponent<Props> = ({ children }) => {
         setFiles,
         loadFiles,
         loadedFilesCount,
+        addFiles,
       }}
     >
       {children}

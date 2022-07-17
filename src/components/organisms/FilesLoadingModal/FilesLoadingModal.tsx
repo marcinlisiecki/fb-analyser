@@ -17,12 +17,11 @@ const FilesLoadingModal: FunctionComponent<Props> = ({ closeModalFn, isOpen }) =
       <p className={'font-bold text-base'}>Ładowanie plików...</p>
 
       <div className={'my-4'}>
-        {files &&
-          Array.from(files).map((file: File, index: number) => (
-            <p key={index}>
-              {file.name} -- {loadedFilesCount > index && 'loaded'}
-            </p>
-          ))}
+        {files.map((file: File, index: number) => (
+          <p key={index}>
+            {file.name} -- {loadedFilesCount > index && 'loaded'}
+          </p>
+        ))}
       </div>
 
       <div></div>
