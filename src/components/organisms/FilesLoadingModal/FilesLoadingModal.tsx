@@ -1,8 +1,9 @@
 import React, { FunctionComponent } from 'react';
 import ModalTemplate from 'components/templates/ModalTemplate';
 import { useFiles } from 'context/FilesContext';
-import { DocumentTextIcon, CheckIcon } from '@heroicons/react/solid';
+import { DocumentTextIcon } from '@heroicons/react/solid';
 import Button from 'components/atoms/Button';
+import { useRouter } from 'next/router';
 
 interface OwnProps {
   isOpen: boolean;
@@ -12,12 +13,13 @@ interface OwnProps {
 type Props = OwnProps;
 
 const FilesLoadingModal: FunctionComponent<Props> = ({ closeModalFn, isOpen }) => {
+  const router = useRouter();
   const { files, loadedFilesCount } = useFiles();
 
   return (
     <ModalTemplate isOpen={isOpen} closeModalFn={closeModalFn} canBackdropClose={false}>
       <p className={'font-bold text-base'}>
-        {files.length < loadedFilesCount ? 'Ładowanie plików...' : 'Analiza gotowa'}
+        {files.length > loadedFilesCount ? 'Ładowanie plików...' : 'Analiza gotowa'}
       </p>
 
       <div className={'my-4 grid grid-cols-3 gap-2'}>
@@ -47,7 +49,11 @@ const FilesLoadingModal: FunctionComponent<Props> = ({ closeModalFn, isOpen }) =
           <Button isSecondary isDanger onClick={closeModalFn}>
             Anuluj
           </Button>
-          <Button customStyles={'ml-8'} isDisabled={files.length > loadedFilesCount}>
+          <Button
+            customStyles={'ml-8'}
+            isDisabled={files.length > loadedFilesCount}
+            onClick={() => router.push('/analysis')}
+          >
             Pokaż analizę
           </Button>
         </div>

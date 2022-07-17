@@ -8,6 +8,7 @@ import FilesLoadingModal from 'components/organisms/FilesLoadingModal';
 
 import { DocumentTextIcon } from '@heroicons/react/solid';
 import Button from 'components/atoms/Button';
+import MainTemplate from 'components/templates/MainTemplate';
 
 interface OwnProps {}
 type Props = OwnProps;
@@ -31,9 +32,9 @@ const HomePage: NextPage<Props> = () => {
   };
 
   return (
-    <>
+    <MainTemplate title={'Home'} withPadding={false}>
       <FilesLoadingModal isOpen={isModalOpen} closeModalFn={() => setIsModalOpen(false)} />
-      <div className={'w-screen h-screen flex items-center justify-center'}>
+      <div className={'w-full h-screen flex items-center justify-center'}>
         <div className={'max-w-[600px]'}>
           <div className={'mb-12'}>
             <h1 className={'font-black text-2xl max-w-[400px]'}>
@@ -60,7 +61,7 @@ const HomePage: NextPage<Props> = () => {
           )}
         </div>
       </div>
-    </>
+    </MainTemplate>
   );
 };
 
