@@ -16,16 +16,20 @@ const FilesLoadingModal: FunctionComponent<Props> = ({ closeModalFn, isOpen }) =
 
   return (
     <ModalTemplate isOpen={isOpen} closeModalFn={closeModalFn} canBackdropClose={false}>
-      <p className={'font-bold text-base'}>Ładowanie plików...</p>
+      <p className={'font-bold text-base'}>
+        {files.length < loadedFilesCount ? 'Ładowanie plików...' : 'Analiza gotowa'}
+      </p>
 
       <div className={'my-4 grid grid-cols-3 gap-2'}>
         {files.map((file, index) => (
-          <div key={index} className={' flex items-center gap-x-1'}>
+          <div key={index} className={'flex items-center gap-x-1'}>
             <DocumentTextIcon
-              className={`w-4 h-4 ${index < loadedFilesCount ? 'fill-gray-400' : 'fill-gray-300'}`}
+              className={`w-4 h-4 transition ${
+                index < loadedFilesCount ? 'fill-gray-400' : 'fill-gray-300'
+              }`}
             />
             <p
-              className={`text-sm font-medium ${
+              className={`text-sm transition font-medium ${
                 index < loadedFilesCount ? 'text-text-secondary' : 'text-text-tertiary'
               }`}
             >
@@ -35,25 +39,18 @@ const FilesLoadingModal: FunctionComponent<Props> = ({ closeModalFn, isOpen }) =
         ))}
       </div>
 
-      <div className={'flex justify-end items-end'}>
-        {files.length === loadedFilesCount ? (
-          <div className={'mt-4 flex justify-end border-t pt-4 w-full gap-x-4'}>
-            <Button isSecondary isDanger onClick={closeModalFn}>
-              Anuluj
-            </Button>
-            <Button>Pokaż analizę</Button>
-          </div>
-        ) : (
-          <div className={'flex-1'}>
-            <p className={'text-sm font-medium text-text-secondary'}>
-              {Math.round((loadedFilesCount / files.length) * 100)}%
-            </p>
-            <div
-              className={'h-1 bg-primary-500 rounded-full transition-[width]'}
-              style={{ width: Math.round((loadedFilesCount / files.length) * 100) + '%' }}
-            />
-          </div>
-        )}
+      <div className={'mt-8 flex justify-between border-t pt-4 w-full items-center'}>
+        <p className={'font-medium text-sm text-text-secondary'}>
+          {files.length > loadedFilesCount ? 'Ładowanie...' : 'Załadowano pliki.'}
+        </p>
+        <div>
+          <Button isSecondary isDanger onClick={closeModalFn}>
+            Anuluj
+          </Button>
+          <Button customStyles={'ml-8'} isDisabled={files.length > loadedFilesCount}>
+            Pokaż analizę
+          </Button>
+        </div>
       </div>
     </ModalTemplate>
   );
