@@ -75,13 +75,9 @@ const FilesProvider: FunctionComponent<Props> = ({ children }) => {
     }
 
     if (fileIndex >= files.length) {
-      console.log(messages);
-
       messages.sort(
         (a: Message, b: Message) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
-
-      console.log(messages);
 
       setMessages(messages);
       setPhotosCount(photosCount);

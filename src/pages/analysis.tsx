@@ -14,9 +14,37 @@ import { useMessages } from 'context/MessagesContext';
 
 import MainTemplate from 'components/templates/MainTemplate';
 import PageLink from 'components/atoms/PageLink';
+import Card from 'components/atoms/Card';
+import Link from 'next/link';
 
 interface OwnProps {}
 type Props = OwnProps;
+
+const tools = [
+  {
+    icon: (
+      <SearchIcon className={'w-7 h-7 transition fill-gray-500 group-hover:fill-primary-500'} />
+    ),
+    text: 'Szukaj słów',
+    path: '/analysis/search',
+  },
+  {
+    icon: (
+      <ClipboardListIcon
+        className={'w-7 h-7 transition fill-gray-500 group-hover:fill-primary-500'}
+      />
+    ),
+    text: 'Lista słów',
+    path: '/analysis/wordlist',
+  },
+  {
+    icon: (
+      <UserGroupIcon className={'w-7 h-7 transition fill-gray-500 group-hover:fill-primary-500'} />
+    ),
+    text: 'Uczestnicy',
+    path: '/analysis/participants',
+  },
+];
 
 const AnalysisPage: NextPage<Props> = () => {
   const router = useRouter();
@@ -41,7 +69,7 @@ const AnalysisPage: NextPage<Props> = () => {
       <div className={'flex gap-12'}>
         <div>
           <h2 className={'mb-2 text-lg font-bold text-text-secondary'}>Podstawowe informacje</h2>
-          <div className={'p-4 rounded-lg border shadow-lg inline-block w-[400px] mb-8'}>
+          <Card customStyles={'w-[400px] mb-8'}>
             <div className={'flex flex-col gap-y-2'}>
               <div className={'flex justify-between items-center gap-x-4'}>
                 <p className={'font-medium text-text-secondary'}>Liczba wiadomości</p>
@@ -68,70 +96,41 @@ const AnalysisPage: NextPage<Props> = () => {
 
               <div className={'flex justify-between items-start gap-x-4'}>
                 <p className={'font-medium text-text-secondary'}>Uczestnicy konwersacji</p>
-                <p className={'font-semibold text-end'}>
+                <div className={'font-semibold text-end'}>
                   {participants.map((participant, index) => (
                     <p key={index}>{participant}</p>
                   ))}
-                </p>
+                </div>
               </div>
             </div>
-          </div>
+          </Card>
         </div>
 
         <div className={''}>
           <h2 className={'mb-2 text-lg font-bold text-text-secondary'}>Narzędzia</h2>
 
-          <div className={'flex items-center justify-start gap-x-4'}>
-            <div
-              className={
-                'p-4 rounded-lg border shadow-lg flex flex-col justify-center items-center gap-3 cursor-pointer transition transform hover:scale-[1.05] group w-[140px] h-[140px]'
-              }
-            >
-              <SearchIcon
-                className={'w-7 h-7 transition fill-gray-500 group-hover:fill-primary-500'}
-              />
-              <p
-                className={
-                  'font-semibold transition text-text-secondary group-hover:text-primary-500'
-                }
-              >
-                Szukaj słów
-              </p>
-            </div>
-
-            <div
-              className={
-                'p-4 rounded-lg border shadow-lg flex flex-col justify-center items-center gap-3 cursor-pointer transition transform hover:scale-[1.05] group w-[140px] h-[140px]'
-              }
-            >
-              <ClipboardListIcon
-                className={'w-7 h-7 transition fill-gray-500 group-hover:fill-primary-500'}
-              />
-              <p
-                className={
-                  'font-semibold transition text-text-secondary group-hover:text-primary-500'
-                }
-              >
-                Lista słów
-              </p>
-            </div>
-
-            <div
-              className={
-                'p-4 rounded-lg border shadow-lg flex flex-col justify-center items-center gap-3 cursor-pointer transition transform hover:scale-[1.05] group w-[140px] h-[140px]'
-              }
-            >
-              <UserGroupIcon
-                className={'w-7 h-7 transition fill-gray-500 group-hover:fill-primary-500'}
-              />
-              <p
-                className={
-                  'font-semibold transition text-text-secondary group-hover:text-primary-500'
-                }
-              >
-                Uczestnicy
-              </p>
-            </div>
+          <div className={'flex items-center justify-start gap-4 flex-wrap'}>
+            {tools.map((tool, index) => (
+              <Link href={tool.path} key={index}>
+                <a>
+                  <Card
+                    isHoverable
+                    customStyles={
+                      'w-[140px] h-[140px] flex flex-col justify-center items-center gap-3'
+                    }
+                  >
+                    {tool.icon}
+                    <p
+                      className={
+                        'font-semibold transition text-text-secondary group-hover:text-primary-500'
+                      }
+                    >
+                      {tool.text}
+                    </p>
+                  </Card>
+                </a>
+              </Link>
+            ))}
           </div>
         </div>
       </div>
