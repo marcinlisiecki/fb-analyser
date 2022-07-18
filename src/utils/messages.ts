@@ -1,3 +1,8 @@
+const getRegex = (query: string) =>
+  new RegExp('(?<=\\s|^)(' + query.toLowerCase() + ')(\\s|$)', 'g');
+
+const countMatches = (exp: RegExp, str: string) => ((str || '').match(exp) || []).length;
+
 export const searchWord = (
   messages: Message[],
   participants: string[],
@@ -8,12 +13,9 @@ export const searchWord = (
   let perParticipant: any = [];
 
   messages.forEach((message: Message) => {
-    if (message?.content?.toLowerCase().split(' ').includes(query.toLowerCase())) {
+    if (getRegex(query).test(message.content.toLowerCase())) {
       messagesFoundCount++;
-      wordsFoundCount += message.content
-        .toLowerCase()
-        .split(' ')
-        .filter((word) => word === query.toLowerCase()).length;
+      wordsFoundCount += countMatches(getRegex(query), message.content.toLowerCase());
 
       const sender = message.sender;
       if (perParticipant.findIndex((item: any) => item.name === sender) !== -1) {

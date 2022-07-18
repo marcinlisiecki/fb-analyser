@@ -48,7 +48,7 @@ const SearchWordPage: FunctionComponent<Props> = () => {
         </Link>
         {' > '}
         <Link href={'/analysis/search'}>
-          <a>Szukaj słów</a>
+          <a>Szukaj</a>
         </Link>
       </h1>
       <div className={'flex h-full'}>
@@ -64,7 +64,7 @@ const SearchWordPage: FunctionComponent<Props> = () => {
         <div className={'flex-1'}>
           <form onSubmit={handleSearch}>
             <Input
-              placeholder={'Szukane słowo...'}
+              placeholder={'Szukane słowo/fraza'}
               value={query}
               onChange={(e) => setQuery((e.target as HTMLInputElement).value)}
             />

@@ -25,7 +25,7 @@ const tools = [
     icon: (
       <SearchIcon className={'w-7 h-7 transition fill-gray-500 group-hover:fill-primary-500'} />
     ),
-    text: 'Szukaj słów',
+    text: 'Szukaj',
     path: '/analysis/search',
   },
   {
