@@ -52,5 +52,31 @@ export const searchWord = (
   };
 };
 
+export const getParticipantsMessagesPercent = (
+  messages: Message[]
+): IParticipantsMessagesPercent => {
+  let participants: any = [];
+
+  messages.forEach((message: Message) => {
+    const sender = message.sender;
+    if (participants.findIndex((item: any) => item.name === sender) !== -1) {
+      participants.find((item: any) => item.name === sender).number++;
+    } else {
+      participants.push({
+        name: sender,
+        number: 1,
+        percent: 0,
+      });
+    }
+  });
+
+  participants.sort((a: any, b: any) => b.number - a.number);
+  participants.forEach((item: any) => {
+    item.percent = parseFloat(((item.number / messages.length) * 100).toFixed(2));
+  });
+
+  return { participants };
+};
+
 export const getWordsCount = (messages: Message[]) =>
   messages.reduce((prev, val) => (prev += val.content.split(' ').length), 0);

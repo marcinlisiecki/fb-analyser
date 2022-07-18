@@ -16,6 +16,7 @@ import MainTemplate from 'components/templates/MainTemplate';
 import PageLink from 'components/atoms/PageLink';
 import Card from 'components/atoms/Card';
 import Link from 'next/link';
+import { getParticipantsMessagesPercent } from 'utils/messages';
 
 interface OwnProps {}
 type Props = OwnProps;
@@ -27,6 +28,7 @@ const tools = [
     ),
     text: 'Szukaj',
     path: '/analysis/search',
+    isAvailable: true,
   },
   {
     icon: (
@@ -35,14 +37,16 @@ const tools = [
       />
     ),
     text: 'Lista słów',
-    path: '/analysis/wordlist',
+    path: '/analysis',
+    isAvailable: false,
   },
   {
     icon: (
       <UserGroupIcon className={'w-7 h-7 transition fill-gray-500 group-hover:fill-primary-500'} />
     ),
     text: 'Uczestnicy',
-    path: '/analysis/participants',
+    path: '/analysis',
+    isAvailable: false,
   },
 ];
 
@@ -104,6 +108,23 @@ const AnalysisPage: NextPage<Props> = () => {
               </div>
             </div>
           </Card>
+
+          <h2 className={'mb-2 text-lg font-bold text-text-secondary'}>
+            Rozkład wiadomości na uczestnika
+          </h2>
+          <Card customStyles={'w-[400px]'}>
+            <>
+              {getParticipantsMessagesPercent(messages).participants.map((item, index) => (
+                <div className={'flex justify-between items-center gap-x-4'} key={index}>
+                  <p className={'font-medium text-text-secondary'}>{item.name}</p>
+                  <p className={'font-semibold'}>
+                    {item.number} ({item.percent}%)
+                  </p>
+                </div>
+              ))}
+            </>
+          </Card>
+          <small className={'font-medium text-text-secondary'}>*Zdjęcia nie są liczone</small>
         </div>
 
         <div className={''}>
@@ -112,12 +133,12 @@ const AnalysisPage: NextPage<Props> = () => {
           <div className={'flex items-center justify-start gap-4 flex-wrap'}>
             {tools.map((tool, index) => (
               <Link href={tool.path} key={index}>
-                <a>
+                <a className={`${!tool.isAvailable && 'cursor-default'}`}>
                   <Card
-                    isHoverable
-                    customStyles={
-                      'w-[140px] h-[140px] flex flex-col justify-center items-center gap-3'
-                    }
+                    isHoverable={tool.isAvailable}
+                    customStyles={`w-[140px] h-[140px] flex flex-col justify-center items-center gap-3 ${
+                      !tool.isAvailable && 'pointer-events-none cursor-default opacity-75'
+                    }`}
                   >
                     {tool.icon}
                     <p
@@ -127,6 +148,16 @@ const AnalysisPage: NextPage<Props> = () => {
                     >
                       {tool.text}
                     </p>
+
+                    {!tool.isAvailable && (
+                      <div
+                        className={
+                          'font-bold rounded-full bg-gray-200 text-text-secondary px-2 py-0.5 text-xs -mt-1'
+                        }
+                      >
+                        Wkrótce
+                      </div>
+                    )}
                   </Card>
                 </a>
               </Link>

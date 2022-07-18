@@ -4,6 +4,16 @@ interface Message {
   date: Date;
 }
 
+interface IParticipantsMessagesPercent {
+  participants: [
+    {
+      name: string;
+      number: number;
+      percent: number;
+    }
+  ];
+}
+
 interface ISearchWord {
   messagesFoundCount: number;
   wordsFoundCount: number;
