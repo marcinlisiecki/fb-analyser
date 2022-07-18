@@ -9,6 +9,7 @@ import FilesLoadingModal from 'components/organisms/FilesLoadingModal';
 import { DocumentTextIcon } from '@heroicons/react/solid';
 import Button from 'components/atoms/Button';
 import MainTemplate from 'components/templates/MainTemplate';
+import PageLink from 'components/atoms/PageLink';
 
 interface OwnProps {}
 type Props = OwnProps;
@@ -41,7 +42,9 @@ const HomePage: NextPage<Props> = () => {
               Aplikacja do analizy wiadomości na Messengerze
               <span className={'text-primary-500'}>.</span>
             </h1>
-            <p className={'text-text-secondary font-medium mt-2'}>Jak korzystać z aplikacji?</p>
+            <PageLink href={'/guide'} customStyles={'mt-2 block'}>
+              Jak korzystać z aplikacji?
+            </PageLink>
           </div>
           <FileInput handleDrop={handleDrop} />
 
