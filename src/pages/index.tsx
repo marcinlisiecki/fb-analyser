@@ -36,7 +36,7 @@ const HomePage: NextPage<Props> = () => {
     <MainTemplate title={'Analiza Messengera'} withPadding={false}>
       <FilesLoadingModal isOpen={isModalOpen} closeModalFn={() => setIsModalOpen(false)} />
       <div className={'w-full h-screen flex items-center justify-center'}>
-        <div className={'max-w-[600px]'}>
+        <div className={'max-w-[600px] p-12'}>
           <div className={'mb-12'}>
             <h1 className={'font-black text-2xl max-w-[400px]'}>
               Aplikacja do analizy wiadomości na Messengerze
