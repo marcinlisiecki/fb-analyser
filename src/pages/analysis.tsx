@@ -4,7 +4,10 @@ import { useMessages } from 'context/MessagesContext';
 import { useRouter } from 'next/router';
 import MainTemplate from 'components/templates/MainTemplate';
 
+import { ArrowNarrowLeftIcon } from '@heroicons/react/solid';
+
 import moment from 'moment';
+import PageLink from 'components/atoms/PageLink';
 
 interface OwnProps {}
 type Props = OwnProps;
@@ -21,10 +24,12 @@ const AnalysisPage: NextPage<Props> = () => {
 
   if (!messages) return null;
 
-  console.log(messages);
-
   return (
     <MainTemplate title={'Analysis'}>
+      <PageLink href={'/'} customStyles={'flex items-center gap-x-1'}>
+        <ArrowNarrowLeftIcon className={'w-4 h-4 fill-primary-600'} />
+        Powrót
+      </PageLink>
       <h1 className={'font-black text-2xl mb-8'}>Analiza konwersacji</h1>
 
       <div className={'p-4 rounded-lg border shadow-lg inline-block w-[400px]'}>
