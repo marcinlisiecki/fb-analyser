@@ -32,7 +32,7 @@ const HomePage: NextPage<Props> = () => {
   };
 
   return (
-    <MainTemplate title={'Home'} withPadding={false}>
+    <MainTemplate title={'Analiza Messengera'} withPadding={false}>
       <FilesLoadingModal isOpen={isModalOpen} closeModalFn={() => setIsModalOpen(false)} />
       <div className={'w-full h-screen flex items-center justify-center'}>
         <div className={'max-w-[600px]'}>

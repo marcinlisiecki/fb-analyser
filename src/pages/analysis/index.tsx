@@ -63,7 +63,7 @@ const AnalysisPage: NextPage<Props> = () => {
   if (!messages) return null;
 
   return (
-    <MainTemplate title={'Analysis'}>
+    <MainTemplate title={'Analiza Messengera'}>
       <PageLink href={'/'} customStyles={'flex items-center gap-x-1'}>
         <ArrowNarrowLeftIcon className={'w-4 h-4 fill-primary-600'} />
         Powrót

@@ -37,7 +37,7 @@ const SearchWordPage: FunctionComponent<Props> = () => {
   };
 
   return (
-    <MainTemplate title={'Szukaj słowa'}>
+    <MainTemplate title={'Szukaj'}>
       <PageLink href={'/analysis'} customStyles={'flex items-center gap-x-1'}>
         <ArrowNarrowLeftIcon className={'w-4 h-4 fill-primary-600'} />
         Powrót

@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import PageTemplate from 'components/templates/PageTemplate';
+import Footer from 'components/organisms/Footer';
 
 interface OwnProps {
   title: string;
@@ -14,6 +15,7 @@ const MainTemplate: FunctionComponent<Props> = ({ children, title, withPadding =
   return (
     <PageTemplate title={title}>
       <main className={`w-full max-w-screen-xl mx-auto ${withPadding && 'p-12'}`}>{children}</main>
+      <Footer />
     </PageTemplate>
   );
 };
