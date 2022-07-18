@@ -14,13 +14,11 @@ type Props = OwnProps;
 
 const FilesLoadingModal: FunctionComponent<Props> = ({ closeModalFn, isOpen }) => {
   const router = useRouter();
-  const { files, loadedFilesCount } = useFiles();
+  const { files, loadedFilesCount, isLoaded } = useFiles();
 
   return (
     <ModalTemplate isOpen={isOpen} closeModalFn={closeModalFn} canBackdropClose={false}>
-      <p className={'font-bold text-base'}>
-        {files.length > loadedFilesCount ? 'Ładowanie plików...' : 'Analiza gotowa'}
-      </p>
+      <p className={'font-bold text-base'}>{isLoaded ? 'Analiza gotowa' : 'Ładowanie plików...'}</p>
 
       <div className={'my-4 grid grid-cols-3 gap-2'}>
         {files.map((file, index) => (
@@ -43,7 +41,7 @@ const FilesLoadingModal: FunctionComponent<Props> = ({ closeModalFn, isOpen }) =
 
       <div className={'mt-8 flex justify-between border-t pt-4 w-full items-center'}>
         <p className={'font-medium text-sm text-text-secondary'}>
-          {files.length > loadedFilesCount ? 'Ładowanie...' : 'Załadowano pliki.'}
+          {isLoaded ? 'Załadowano pliki' : 'Ładowanie...'}
         </p>
         <div>
           <Button isSecondary isDanger onClick={closeModalFn}>
@@ -51,7 +49,7 @@ const FilesLoadingModal: FunctionComponent<Props> = ({ closeModalFn, isOpen }) =
           </Button>
           <Button
             customStyles={'ml-8'}
-            isDisabled={files.length > loadedFilesCount}
+            isDisabled={!isLoaded}
             onClick={() => router.push('/analysis')}
           >
             Pokaż analizę

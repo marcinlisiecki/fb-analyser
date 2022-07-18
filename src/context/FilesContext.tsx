@@ -22,6 +22,8 @@ interface ContextState {
   loadFiles: () => void;
   loadedFilesCount: number;
   addFiles: (e: DragEvent<HTMLDivElement>) => void;
+  isLoaded: boolean;
+  setIsLoaded: (isLoaded: boolean) => void;
 }
 
 const FilesContext = createContext<null | ContextState>(null);
@@ -36,6 +38,8 @@ const FilesProvider: FunctionComponent<Props> = ({ children }) => {
 
   const [files, setFiles] = useState<File[]>([]);
   const [loadedFilesCount, setLoadedFilesCount] = useState<number>(0);
+
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const handleReaderResults = (event: ProgressEvent<FileReader>) => {
     if (typeof event.target?.result !== 'string') return;
@@ -71,8 +75,18 @@ const FilesProvider: FunctionComponent<Props> = ({ children }) => {
     }
 
     if (fileIndex >= files.length) {
+      console.log(messages);
+
+      messages.sort(
+        (a: Message, b: Message) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
+
+      console.log(messages);
+
       setMessages(messages);
       setPhotosCount(photosCount);
+
+      setIsLoaded(true);
 
       return;
     }
@@ -93,6 +107,7 @@ const FilesProvider: FunctionComponent<Props> = ({ children }) => {
     setMessages(null);
     setPhotosCount(0);
     setParticipants([]);
+    setIsLoaded(false);
 
     messages = [];
     photosCount = 0;
@@ -107,12 +122,11 @@ const FilesProvider: FunctionComponent<Props> = ({ children }) => {
       newFiles.push(file);
     });
 
-    newFiles.sort(
-      (a: File, b: File) =>
-        // @ts-ignore
-        parseInt(a.name.match(/\d/g).join('')) - parseInt(b.name.match(/\d/g).join(''))
-    );
-    console.log(newFiles);
+    // newFiles.sort(
+    //   (a: File, b: File) =>
+    //     // @ts-ignore
+    //     parseInt(a.name.match(/\d/g).join('')) - parseInt(b.name.match(/\d/g).join(''))
+    // );
 
     setFiles(newFiles);
   };
@@ -125,6 +139,8 @@ const FilesProvider: FunctionComponent<Props> = ({ children }) => {
         loadFiles,
         loadedFilesCount,
         addFiles,
+        isLoaded,
+        setIsLoaded,
       }}
     >
       {children}
