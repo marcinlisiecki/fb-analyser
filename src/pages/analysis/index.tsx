@@ -1,6 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
+
+import { Line } from 'react-chartjs-2';
+
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler,
+} from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(Filler);
 
 import {
   ArrowNarrowLeftIcon,
@@ -16,7 +33,7 @@ import MainTemplate from 'components/templates/MainTemplate';
 import PageLink from 'components/atoms/PageLink';
 import Card from 'components/atoms/Card';
 import Link from 'next/link';
-import { getParticipantsMessagesPercent } from 'utils/messages';
+import { getParticipantsMessagesPercent, groupByDailyMessages } from 'utils/messages';
 
 interface OwnProps {}
 type Props = OwnProps;
@@ -53,6 +70,8 @@ const tools = [
 const AnalysisPage: NextPage<Props> = () => {
   const router = useRouter();
   const { messages, participants } = useMessages();
+
+  const dailyMessages = useMemo(() => (messages ? groupByDailyMessages(messages) : []), [messages]);
 
   useEffect(() => {
     if (!messages) {
@@ -164,6 +183,73 @@ const AnalysisPage: NextPage<Props> = () => {
             ))}
           </div>
         </div>
+      </div>
+
+      <h2 className={'mb-2 text-lg font-bold text-text-secondary mt-8'}>
+        Wykres liczby wiadomości przez ostatnie 14 dni
+      </h2>
+      <div className={'h-[400px] w-full mt-4'}>
+        <Line
+          data={{
+            labels: [...dailyMessages.map((day) => moment(day.date).format('DD/MM/YYYY'))],
+            datasets: [
+              {
+                label: 'Liczba wiadomości',
+                data: [...dailyMessages.map((day) => day.messages)],
+                borderColor: 'rgba(23,78,216,0.99)',
+                backgroundColor: 'rgba(23,78,216,0.3)',
+                fill: true,
+                tension: 0.3,
+                pointBackgroundColor: '#174ed8',
+                pointRadius: 2,
+                borderWidth: 2,
+              },
+            ],
+          }}
+          options={{
+            plugins: {
+              tooltip: {
+                intersect: false,
+                mode: 'index',
+              },
+              legend: {
+                display: false,
+              },
+            },
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+              y: {
+                grid: {
+                  display: false,
+                },
+                min: 0,
+                suggestedMax: 100,
+                ticks: {
+                  color: 'rgba(51,65,85,0.5)',
+                  font: {
+                    size: 14,
+                    family: 'Manrope',
+                    weight: '600',
+                  },
+                },
+              },
+              x: {
+                grid: {
+                  display: false,
+                },
+                ticks: {
+                  color: '#334155',
+                  font: {
+                    size: 0,
+                    family: 'Manrope',
+                    weight: 'bold',
+                  },
+                },
+              },
+            },
+          }}
+        />
       </div>
     </MainTemplate>
   );

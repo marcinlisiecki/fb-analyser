@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const getRegex = (query: string) =>
   new RegExp('(?<=\\s|^)(' + query.toLowerCase() + ')(\\s|$)', 'g');
 
@@ -80,3 +82,42 @@ export const getParticipantsMessagesPercent = (
 
 export const getWordsCount = (messages: Message[]) =>
   messages.reduce((prev, val) => (prev += val.content.split(' ').length), 0);
+
+type IDailyMessages = { date: Date; messages: number }[];
+
+export const groupByDailyMessages = (messages: Message[]): IDailyMessages => {
+  const daily: IDailyMessages = [];
+
+  const firstDay = moment(new Date()).subtract('13', 'days');
+  const lastDay = moment(new Date());
+
+  const dayDifference = lastDay.diff(firstDay, 'days');
+
+  for (let i = 0; i < dayDifference; i++) {
+    daily.push({
+      messages: 0,
+      date: moment(firstDay).add(i, 'days').toDate(),
+    });
+  }
+
+  messages.forEach((message: Message) => {
+    const date = new Date(message.date);
+
+    if (moment(date).isAfter(lastDay, 'day') || moment(date).isBefore(firstDay, 'day')) {
+      return;
+    }
+
+    if (daily.findIndex((day: any) => moment(day.date).isSame(date, 'day')) !== -1) {
+      daily[daily.findIndex((day: any) => moment(day.date).isSame(date, 'day'))].messages++;
+    } else {
+      daily.push({
+        date,
+        messages: 1,
+      });
+    }
+  });
+
+  daily.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+  return daily;
+};

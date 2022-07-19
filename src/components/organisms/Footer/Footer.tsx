@@ -7,7 +7,7 @@ type Props = OwnProps;
 
 const Footer: FunctionComponent<Props> = (props) => {
   return (
-    <footer className={'absolute bottom-0 left-0 w-full p-12 text-center'}>
+    <footer className={'w-full p-4 text-center'}>
       <p className={'text-sm text-text-secondary font-medium'}>
         &copy; 2022 &bull;{' '}
         <Link href={'https://www.facebook.com/profile.php?id=100008574523686'}>

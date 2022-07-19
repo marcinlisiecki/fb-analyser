@@ -35,7 +35,7 @@ const HomePage: NextPage<Props> = () => {
   return (
     <MainTemplate title={'Analiza Messengera'} withPadding={false}>
       <FilesLoadingModal isOpen={isModalOpen} closeModalFn={() => setIsModalOpen(false)} />
-      <div className={'w-full h-screen flex items-center justify-center'}>
+      <div className={'w-full h-[calc(100vh-60px)] flex items-center justify-center'}>
         <div className={'max-w-[600px] p-12'}>
           <div className={'mb-12'}>
             <h1 className={'font-black text-2xl max-w-[400px]'}>

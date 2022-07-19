@@ -9,7 +9,11 @@ type Props = OwnProps;
 const GuidePage: FunctionComponent<Props> = () => {
   return (
     <MainTemplate title={'Jak korzystać z aplikacji?'} withPadding={false}>
-      <div className={'h-full min-h-screen flex items-center justify-center font-bold text-2xl'}>
+      <div
+        className={
+          'h-full h-[calc(100vh-60px)] flex items-center justify-center font-bold text-2xl'
+        }
+      >
         XD
       </div>
     </MainTemplate>
