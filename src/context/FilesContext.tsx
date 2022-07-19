@@ -41,11 +41,11 @@ const FilesProvider: FunctionComponent<Props> = ({ children }) => {
 
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const handleReaderResults = (event: ProgressEvent<FileReader>) => {
+  const handleReaderResults = (event: ProgressEvent<FileReader>, fileIndex: number) => {
     if (typeof event.target?.result !== 'string') return;
 
     const json: any = JSON.parse(event.target.result);
-    if (participants.length === 0) {
+    if (fileIndex === 1) {
       setParticipants(
         json.participants.reduce((prev: string[], val: any) => [...prev, utf8.decode(val.name)], [])
       );
@@ -71,7 +71,7 @@ const FilesProvider: FunctionComponent<Props> = ({ children }) => {
 
     if (event) {
       setLoadedFilesCount(fileIndex);
-      handleReaderResults(event);
+      handleReaderResults(event, fileIndex);
     }
 
     if (fileIndex >= files.length) {

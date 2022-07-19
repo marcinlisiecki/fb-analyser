@@ -33,7 +33,7 @@ const FileInput: FunctionComponent<Props> = ({ handleDrop }) => {
       />
       <p
         className={`font-medium text-text-secondary text-center transition ${
-          isDragging && 'text-primary-500'
+          isDragging && '!text-primary-500'
         }`}
       >
         Przeciągnij tutaj pliki z wiadomościami
