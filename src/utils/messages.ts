@@ -83,7 +83,7 @@ export const getParticipantsMessagesPercent = (
 export const getWordsCount = (messages: Message[]) =>
   messages.reduce((prev, val) => (prev += val.content.split(' ').length), 0);
 
-type IDailyMessages = { date: Date; messages: number }[];
+type IDailyMessages = { date: Date; messages: number; participants: { [name: string]: number } }[];
 
 export const groupByDailyMessages = (messages: Message[]): IDailyMessages => {
   const daily: IDailyMessages = [];
@@ -97,11 +97,13 @@ export const groupByDailyMessages = (messages: Message[]): IDailyMessages => {
     daily.push({
       messages: 0,
       date: moment(firstDay).add(i, 'days').toDate(),
+      participants: {},
     });
   }
 
   messages.forEach((message: Message) => {
     const date = new Date(message.date);
+    const sender = message.sender;
 
     if (moment(date).isAfter(lastDay, 'day') || moment(date).isBefore(firstDay, 'day')) {
       return;
@@ -109,10 +111,27 @@ export const groupByDailyMessages = (messages: Message[]): IDailyMessages => {
 
     if (daily.findIndex((day: any) => moment(day.date).isSame(date, 'day')) !== -1) {
       daily[daily.findIndex((day: any) => moment(day.date).isSame(date, 'day'))].messages++;
+
+      if (
+        daily[daily.findIndex((day: any) => moment(day.date).isSame(date, 'day'))].participants[
+          sender
+        ]
+      ) {
+        daily[daily.findIndex((day: any) => moment(day.date).isSame(date, 'day'))].participants[
+          sender
+        ]++;
+      } else {
+        daily[daily.findIndex((day: any) => moment(day.date).isSame(date, 'day'))].participants[
+          sender
+        ] = 1;
+      }
     } else {
       daily.push({
         date,
         messages: 1,
+        participants: {
+          [sender]: 1,
+        },
       });
     }
   });

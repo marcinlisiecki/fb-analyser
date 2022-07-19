@@ -67,6 +67,12 @@ const tools = [
   },
 ];
 
+const chartColors = [
+  ['rgba(23,78,216,0.99)', 'rgba(23,78,216,0.3)'],
+  ['rgba(7,127,9,0.99)', 'rgba(7,127,9,0.3)'],
+  ['rgba(127,7,67,0.99)', 'rgba(127,7,67,0.3)'],
+];
+
 const AnalysisPage: NextPage<Props> = () => {
   const router = useRouter();
   const { messages, participants } = useMessages();
@@ -188,7 +194,7 @@ const AnalysisPage: NextPage<Props> = () => {
       <h2 className={'mb-2 text-lg font-bold text-text-secondary mt-8'}>
         Wykres liczby wiadomości przez ostatnie 14 dni
       </h2>
-      <div className={'h-[400px] w-full mt-4'}>
+      <div className={'h-[450px] w-full mt-4'}>
         <Line
           data={{
             labels: [...dailyMessages.map((day) => moment(day.date).format('DD/MM/YYYY'))],
@@ -214,6 +220,73 @@ const AnalysisPage: NextPage<Props> = () => {
               },
               legend: {
                 display: false,
+              },
+            },
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+              y: {
+                grid: {
+                  display: false,
+                },
+                min: 0,
+                suggestedMax: 100,
+                ticks: {
+                  color: 'rgba(51,65,85,0.5)',
+                  font: {
+                    size: 14,
+                    family: 'Manrope',
+                    weight: '600',
+                  },
+                },
+              },
+              x: {
+                grid: {
+                  display: false,
+                },
+                ticks: {
+                  color: '#334155',
+                  font: {
+                    size: 0,
+                    family: 'Manrope',
+                    weight: 'bold',
+                  },
+                },
+              },
+            },
+          }}
+        />
+      </div>
+
+      <h2 className={'mb-2 text-lg font-bold text-text-secondary mt-8'}>
+        Wykres liczby wiadomości przez ostatnie 14 dni na osobę
+      </h2>
+      <div className={'h-[450px] w-full mt-4'}>
+        <Line
+          data={{
+            labels: [...dailyMessages.map((day) => moment(day.date).format('DD/MM/YYYY'))],
+            datasets: [
+              ...participants.map((participant, index) => ({
+                label: participant,
+                data: [...dailyMessages.map((day) => day.participants[participant] || 0)],
+                borderColor: `${chartColors[index % chartColors.length][0]}`,
+                backgroundColor: `${chartColors[index % chartColors.length][1]}`,
+                fill: true,
+                tension: 0.3,
+                pointBackgroundColor: chartColors[index % chartColors.length][0],
+                pointRadius: 2,
+                borderWidth: 2,
+              })),
+            ],
+          }}
+          options={{
+            plugins: {
+              tooltip: {
+                intersect: false,
+                mode: 'index',
+              },
+              legend: {
+                display: true,
               },
             },
             maintainAspectRatio: false,
