@@ -85,15 +85,19 @@ export const getWordsCount = (messages: Message[]) =>
 
 type IDailyMessages = { date: Date; messages: number; participants: { [name: string]: number } }[];
 
-export const groupByDailyMessages = (messages: Message[]): IDailyMessages => {
+export const groupByDailyMessages = (
+  messages: Message[],
+  startDate: Date,
+  endDate: Date
+): IDailyMessages => {
   const daily: IDailyMessages = [];
 
-  const firstDay = moment(new Date()).subtract('13', 'days');
-  const lastDay = moment(new Date());
+  const firstDay = moment(startDate);
+  const lastDay = moment(endDate);
 
   const dayDifference = lastDay.diff(firstDay, 'days');
 
-  for (let i = 0; i < dayDifference; i++) {
+  for (let i = 0; i <= dayDifference; i++) {
     daily.push({
       messages: 0,
       date: moment(firstDay).add(i, 'days').toDate(),

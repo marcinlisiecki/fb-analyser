@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
 
@@ -34,6 +34,7 @@ import PageLink from 'components/atoms/PageLink';
 import Card from 'components/atoms/Card';
 import Link from 'next/link';
 import { getParticipantsMessagesPercent, groupByDailyMessages } from 'utils/messages';
+import Button from 'components/atoms/Button';
 
 interface OwnProps {}
 type Props = OwnProps;
@@ -71,13 +72,39 @@ const chartColors = [
   ['rgba(23,78,216,0.99)', 'rgba(23,78,216,0.3)'],
   ['rgba(7,127,9,0.99)', 'rgba(7,127,9,0.3)'],
   ['rgba(127,7,67,0.99)', 'rgba(127,7,67,0.3)'],
+  ['rgba(127,7,7,0.99)', 'rgba(27,7,7,0.3)'],
+  ['rgba(174,161,6,0.99)', 'rgba(174,161,6,0.3)'],
+  ['rgba(6,174,143,0.99)', 'rgba(6,174,143,0.3)'],
+  ['rgba(208,98,9,0.99)', 'rgba(208,98,9,0.3)'],
+  ['rgba(116,183,0,0.99)', 'rgba(116,183,0,0.3)'],
+  ['rgba(149,27,220,0.99)', 'rgba(149,27,220,0.3)'],
+  ['rgba(78,0,206,0.99)', 'rgba(78,0,206,0.3)'],
 ];
 
 const AnalysisPage: NextPage<Props> = () => {
   const router = useRouter();
   const { messages, participants } = useMessages();
 
-  const dailyMessages = useMemo(() => (messages ? groupByDailyMessages(messages) : []), [messages]);
+  const [chartStartDate, setChartStartDate] = useState<Date>(
+    moment(new Date()).subtract('13', 'day').toDate()
+  );
+
+  const [chartEndDate, setChartEndDate] = useState<Date>(moment(new Date()).toDate());
+
+  const dailyMessages = useMemo(
+    () => (messages ? groupByDailyMessages(messages, chartStartDate, chartEndDate) : []),
+    [messages, chartStartDate, chartEndDate]
+  );
+
+  const subtractTwoWeeks = () => {
+    setChartStartDate((prev: Date) => moment(prev).subtract(14, 'day').toDate());
+    setChartEndDate((prev: Date) => moment(prev).subtract(14, 'day').toDate());
+  };
+
+  const addTwoWeeks = () => {
+    setChartStartDate((prev: Date) => moment(prev).add(14, 'day').toDate());
+    setChartEndDate((prev: Date) => moment(prev).add(14, 'day').toDate());
+  };
 
   useEffect(() => {
     if (!messages) {
@@ -191,8 +218,21 @@ const AnalysisPage: NextPage<Props> = () => {
         </div>
       </div>
 
-      <h2 className={'mb-2 text-lg font-bold text-text-secondary mt-8'}>
-        Wykres liczby wiadomości przez ostatnie 14 dni
+      <div className={'mt-8 flex gap-x-4'}>
+        <Button isSecondary customStyles={'!text-primary-500'} onClick={subtractTwoWeeks}>
+          Cofnij 2 tygodnie
+        </Button>
+        <Button isSecondary customStyles={'!text-primary-500'} onClick={addTwoWeeks}>
+          Dodaj 2 tygodnie
+        </Button>
+      </div>
+
+      <h2 className={'mb-2 text-lg font-bold text-text-secondary mt-2 flex items-end gap-x-4'}>
+        Wykres liczby wiadomości{' '}
+        <span className={'text-text-tertiary text-sm pb-px'}>
+          {moment(chartStartDate).format('DD/MM/YYYY')} -{' '}
+          {moment(chartEndDate).format('DD/MM/YYYY')}
+        </span>
       </h2>
       <div className={'h-[450px] w-full mt-4'}>
         <Line
@@ -230,7 +270,7 @@ const AnalysisPage: NextPage<Props> = () => {
                   display: false,
                 },
                 min: 0,
-                suggestedMax: 100,
+                suggestedMax: 25,
                 ticks: {
                   color: 'rgba(51,65,85,0.5)',
                   font: {
@@ -258,8 +298,21 @@ const AnalysisPage: NextPage<Props> = () => {
         />
       </div>
 
-      <h2 className={'mb-2 text-lg font-bold text-text-secondary mt-8'}>
-        Wykres liczby wiadomości przez ostatnie 14 dni na osobę
+      <div className={'mt-8 flex gap-x-4'}>
+        <Button isSecondary customStyles={'!text-primary-500'} onClick={subtractTwoWeeks}>
+          Cofnij 2 tygodnie
+        </Button>
+        <Button isSecondary customStyles={'!text-primary-500'} onClick={addTwoWeeks}>
+          Dodaj 2 tygodnie
+        </Button>
+      </div>
+
+      <h2 className={'mb-2 text-lg font-bold text-text-secondary mt-2 flex items-end gap-x-4'}>
+        Wykres liczby wiadomości na osobę{'  '}
+        <span className={'text-text-tertiary text-sm pb-px'}>
+          {moment(chartStartDate).format('DD/MM/YYYY')} -{' '}
+          {moment(chartEndDate).format('DD/MM/YYYY')}
+        </span>
       </h2>
       <div className={'h-[450px] w-full mt-4'}>
         <Line
@@ -297,7 +350,7 @@ const AnalysisPage: NextPage<Props> = () => {
                   display: false,
                 },
                 min: 0,
-                suggestedMax: 100,
+                suggestedMax: 25,
                 ticks: {
                   color: 'rgba(51,65,85,0.5)',
                   font: {
