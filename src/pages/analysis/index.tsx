@@ -219,11 +219,11 @@ const AnalysisPage: NextPage<Props> = () => {
       </div>
 
       <div className={'mt-8 flex gap-x-4'}>
-        <Button isSecondary customStyles={'!text-primary-500'} onClick={subtractTwoWeeks}>
-          Cofnij 2 tygodnie
+        <Button isSecondary onClick={subtractTwoWeeks}>
+          <span className={'text-primary-500'}>Cofnij 2 tygodnie</span>
         </Button>
-        <Button isSecondary customStyles={'!text-primary-500'} onClick={addTwoWeeks}>
-          Dodaj 2 tygodnie
+        <Button isSecondary onClick={addTwoWeeks}>
+          <span className={'text-primary-500'}>Dodaj 2 tygodnie</span>
         </Button>
       </div>
 
@@ -299,11 +299,11 @@ const AnalysisPage: NextPage<Props> = () => {
       </div>
 
       <div className={'mt-8 flex gap-x-4'}>
-        <Button isSecondary customStyles={'!text-primary-500'} onClick={subtractTwoWeeks}>
-          Cofnij 2 tygodnie
+        <Button isSecondary onClick={subtractTwoWeeks}>
+          <span className={'text-primary-500'}>Cofnij 2 tygodnie</span>
         </Button>
-        <Button isSecondary customStyles={'!text-primary-500'} onClick={addTwoWeeks}>
-          Dodaj 2 tygodnie
+        <Button isSecondary onClick={addTwoWeeks}>
+          <span className={'text-primary-500'}>Dodaj 2 tygodnie</span>
         </Button>
       </div>
 
