@@ -42,9 +42,6 @@ const HomePage: NextPage<Props> = () => {
               Aplikacja do analizy wiadomości na Messengerze
               <span className={'text-primary-500'}>.</span>
             </h1>
-            <PageLink href={'/guide'} customStyles={'mt-2 block'}>
-              Jak korzystać z aplikacji?
-            </PageLink>
           </div>
           <FileInput handleDrop={handleDrop} />
 
